@@ -1,0 +1,72 @@
+{
+  "version": "local editfix16",
+  "basedOn": "Veridis-Rewrite-3.5-routerfix.1-editfix.15-流式开关归入API配置修复版.zip",
+  "runtimeChanged": [
+    "src/aiRewrite/boundaryDialogue.js"
+  ],
+  "codeAndIntegrationTestsPassed": 209,
+  "uiChecksPassed": 69,
+  "myriadScenariosPassed": 3,
+  "startupCandidate": {
+    "version": "candidate",
+    "completeEntryPoint": true,
+    "cpuThrottle": 6,
+    "viewport": 360,
+    "initial": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 0
+    },
+    "opened": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 2
+    },
+    "churn": {
+      "before": {
+        "chatSaves": 0,
+        "settingsSaves": 1,
+        "rectReads": 0,
+        "layoutCallbacks": 0,
+        "resizeCallbacks": 0,
+        "mutations": 2
+      },
+      "after": {
+        "chatSaves": 0,
+        "settingsSaves": 1,
+        "rectReads": 0,
+        "layoutCallbacks": 0,
+        "resizeCallbacks": 0,
+        "mutations": 2
+      }
+    },
+    "settled": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 2
+    },
+    "chatOpenElapsedMs": 336.4000000357628,
+    "checks": [
+      "closed mobile window performs zero host layout reads or layout callbacks",
+      "open mobile window also avoids host column measurements and observers",
+      "open desktop window is fixed at 1040px and centered independently of chat column",
+      "desktop window never registers layout observers or reads chat bounds",
+      "reopen and desktop-to-mobile breakpoint work entirely through CSS"
+    ],
+    "errors": []
+  },
+  "limits": [
+    "模拟接口，未调用收费模型",
+    "桌面 Chrome 手机视口及 CPU 限速，不是真实 Android/Termux 复测",
+    "只裁切可核实的结构性回抄，不保证任意近义重复都能识别"
+  ]
+}

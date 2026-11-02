@@ -1,0 +1,53 @@
+--- editfix14/templates/purifier.html
++++ editfix15/templates/purifier.html
+@@ -112,11 +112,6 @@
+                                                     <span class="blai-ai-switch-track" aria-hidden="true"></span>
+                                                     <span>自动触发 AI 改写</span>
+                                                 </label>
+-                                                <label class="blai-ai-switch" title="关闭时使用非流式返回；两种方式均在结果完整后应用改写">
+-                                                    <input type="checkbox" id="blai-ai-streaming-enabled">
+-                                                    <span class="blai-ai-switch-track" aria-hidden="true"></span>
+-                                                    <span>流式返回</span>
+-                                                </label>
+                                             </div>
+                                         </header>
+                                         <div class="blai-ai-connection-grid">
+@@ -156,6 +151,11 @@
+                                                     <input type="text" id="blai-ai-model-manual" class="blai-input" placeholder="输入模型 ID" autocomplete="off" hidden>
+                                                     <button type="button" id="blai-ai-model-fetch" class="blai-ai-icon-button" title="刷新模型列表" aria-label="刷新模型列表"><i class="fas fa-rotate" aria-hidden="true"></i></button>
+                                                 </span>
++                                            </label>
++                                            <label class="blai-ai-control blai-ai-switch" title="关闭时使用非流式返回；两种方式均在结果完整后应用改写">
++                                                <input type="checkbox" id="blai-ai-streaming-enabled">
++                                                <span class="blai-ai-switch-track" aria-hidden="true"></span>
++                                                <span>流式返回</span>
+                                             </label>
+                                             <label class="blai-ai-control blai-ai-xml-control">
+                                                 <span class="blai-ai-control-label">XML 处理触发范围</span>
+--- editfix14/tests/ui-column.mjs
++++ editfix15/tests/ui-column.mjs
+@@ -137,16 +137,18 @@
+         await page.waitForFunction(mobile=>matchMedia('(max-width: 600px)').matches===mobile,width<=600);
+         await page.evaluate(()=>{fixture.shell.showResponsivePage('ai');const select=document.getElementById('blai-ui-font-scale');select.value='1.6';select.dispatchEvent(new Event('change',{bubbles:true}));});
+         assert.equal(await page.locator('.blai-ai-request-options').evaluate(el=>el.open),false);
+-        const switchLabel=page.locator('.blai-ai-rewrite-switches label:has(#blai-ai-streaming-enabled)');
++        const switchLabel=page.locator('.blai-ai-connection-grid > label:has(#blai-ai-streaming-enabled)');
+         assert.equal(await switchLabel.isVisible(),true);
+         assert.equal(await page.locator('#blai-ai-streaming-enabled').count(),1);
++        assert.equal(await page.locator('.blai-ai-connection-header #blai-ai-streaming-enabled').count(),0);
++        assert.equal(await switchLabel.evaluate(el=>el.previousElementSibling.classList.contains('blai-ai-model-field')),true);
+         await setStreaming(true); await setStreaming(false);
+         const bounds=await switchLabel.boundingBox();
+-        const header=await page.locator('.blai-ai-connection-header').boundingBox();
+-        assert.ok(bounds.x>=header.x&&bounds.x+bounds.width<=header.x+header.width+1);
+-        assert.ok(bounds.y>=header.y&&bounds.y+bounds.height<=header.y+header.height+1);
+-        await page.locator('.blai-ai-connection-header').screenshot({path:path.join(output,'api-switch-exposed-'+width+'.png')});
+-        check(width+': streaming switch is visible and works with additional parameters collapsed');
++        const grid=await page.locator('.blai-ai-connection-grid').boundingBox();
++        assert.ok(bounds.x>=grid.x&&bounds.x+bounds.width<=grid.x+grid.width+1);
++        assert.ok(bounds.y>=grid.y&&bounds.y+bounds.height<=grid.y+grid.height+1);
++        await page.locator('.blai-ai-connection-grid').screenshot({path:path.join(output,'api-switch-grid-'+width+'.png')});
++        check(width+': streaming switch follows model in API fields and works with additional parameters collapsed');
+         await page.locator('.blai-ai-request-options > summary').click();
+         await setStreaming(false);
+         for (const scale of ['1', '1.6']) {

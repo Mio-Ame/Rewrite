@@ -1,0 +1,65 @@
+{
+  "version": "local editfix17",
+  "codeIntegrationPass": 216,
+  "uiPass": 69,
+  "myriadPass": 3,
+  "startup": {
+    "version": "candidate",
+    "completeEntryPoint": true,
+    "cpuThrottle": 6,
+    "viewport": 360,
+    "initial": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 0
+    },
+    "opened": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 2
+    },
+    "churn": {
+      "before": {
+        "chatSaves": 0,
+        "settingsSaves": 1,
+        "rectReads": 0,
+        "layoutCallbacks": 0,
+        "resizeCallbacks": 0,
+        "mutations": 2
+      },
+      "after": {
+        "chatSaves": 0,
+        "settingsSaves": 1,
+        "rectReads": 0,
+        "layoutCallbacks": 0,
+        "resizeCallbacks": 0,
+        "mutations": 2
+      }
+    },
+    "settled": {
+      "chatSaves": 0,
+      "settingsSaves": 1,
+      "rectReads": 0,
+      "layoutCallbacks": 0,
+      "resizeCallbacks": 0,
+      "mutations": 2
+    },
+    "chatOpenElapsedMs": 882.8999999761581,
+    "checks": [
+      "closed mobile window performs zero host layout reads or layout callbacks",
+      "open mobile window also avoids host column measurements and observers",
+      "open desktop window is fixed at 1040px and centered independently of chat column",
+      "desktop window never registers layout observers or reads chat bounds",
+      "reopen and desktop-to-mobile breakpoint work entirely through CSS"
+    ],
+    "errors": []
+  },
+  "evidence": "New quoted term cases are screenshot reconstructions; editfix16 speech case uses captured request/response.",
+  "scope": "Mocked provider and desktop Chrome mobile viewport/CPU throttle. No real Android/Termux or paid model calls."
+}

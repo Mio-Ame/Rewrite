@@ -1,0 +1,370 @@
+{
+  "originalRepository": "The-Veridis-Lion/Veridis-Rewrite",
+  "originalCommit": "46182c691688360ee698f3d9d44b46fbfb057d64",
+  "reportedFailingLocalPatch": "routerfix.1-editfix.3",
+  "userEvidence": "Updated user report: upstream can also freeze in Luker; friend imported presets before opening the character, so clean-default behavior is unknown. Actual affected archive has upstream Veridis and MyriadKnots 0.9.2. Persistent freeze not reproduced in the isolated 14-plugin run.",
+  "criticalFiles": [
+    {
+      "path": "index.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "74c29dc43cf18c048b3484b3c731f87f67fa6b1a88547f7b662e63cdc5786998"
+    },
+    {
+      "path": "src/host/lifecycleEvents.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "9c41472ebba75e6060e1954ddddb92ffd346216f52b9c1af71ba7add79c8d0f9"
+    },
+    {
+      "path": "src/dom/observer.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "79a663f52bca14a804df8da2bc24024dcb80fa3952ec6aea79e861a38d4cf6a6"
+    },
+    {
+      "path": "src/diff/messageMeta.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "9d470490d981b0c07ee277dffde3d5e87d4d33ddf589364f44f4f9700b4fd115"
+    },
+    {
+      "path": "src/diff/retention.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "cfb7f59f66935250358fdf8ac0d8e457c315fde6f707ec4b3754440c098afe6d"
+    },
+    {
+      "path": "src/chat/cleanse.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "6a7abc1c73a2b93c4dd5c0e41ae549d673ccd52de06b4205d8df736353a24740"
+    },
+    {
+      "path": "src/chat/persistence.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "b0cf791327324b4143a63342fa44883ff35b78a905c79ad760f08fdc223f1536"
+    },
+    {
+      "path": "src/rules/engine.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "4123bc8a76f7388db64b8d99fa01b15a2ee61715233927cf2144a3bf2274b9c0"
+    },
+    {
+      "path": "src/settings/migration.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "ca223e88996e77f5bd400347bfe41f011409b0c59854be7e8ec7aa8ce9b777e6"
+    },
+    {
+      "path": "src/host/context.js",
+      "originalAndEditfix3Identical": true,
+      "sha256": "5b492a913ef11291d480f4ac4fc7f35fb9473f8e94dd6799f515cdad762b7236"
+    }
+  ],
+  "changedJavascriptFiles": [
+    "src/aiRewrite/apply.js",
+    "src/aiRewrite/boundaryDialogue.js",
+    "src/aiRewrite/communicationMonitor.js",
+    "src/aiRewrite/generation.js",
+    "src/aiRewrite/isolatedRequest.js",
+    "src/aiRewrite/narrationCopies.js",
+    "src/aiRewrite/runtime.js",
+    "src/aiRewrite/task.js",
+    "src/deepClean/aiProcessing.js",
+    "src/events.js",
+    "src/presets/application.js",
+    "src/presets/events.js",
+    "src/rules/view.js",
+    "src/settings/defaults.js",
+    "src/ui/fontScale.js",
+    "src/ui/shell.js"
+  ],
+  "diagnostic": {
+    "recordType": "binding",
+    "method": "GET",
+    "elapsedMs": 37271,
+    "code": "BACKEND_TIMEOUT",
+    "phase": "identityPrepare",
+    "prepareStep": "identityDirectory"
+  },
+  "controlledBrowserComparison": {
+    "results": [
+      {
+        "version": "original",
+        "completeEntryPoint": true,
+        "cpuThrottle": 6,
+        "viewport": 360,
+        "initial": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 0
+        },
+        "opened": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 2
+        },
+        "churn": {
+          "before": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 0,
+            "layoutCallbacks": 0,
+            "resizeCallbacks": 0,
+            "mutations": 2
+          },
+          "after": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 0,
+            "layoutCallbacks": 0,
+            "resizeCallbacks": 0,
+            "mutations": 2
+          }
+        },
+        "settled": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 2
+        },
+        "chatOpenElapsedMs": 386.10000002384186,
+        "checks": [],
+        "errors": []
+      },
+      {
+        "version": "editfix3",
+        "completeEntryPoint": true,
+        "cpuThrottle": 6,
+        "viewport": 360,
+        "initial": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 3,
+          "layoutCallbacks": 1,
+          "resizeCallbacks": 1,
+          "mutations": 1
+        },
+        "opened": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 3,
+          "layoutCallbacks": 1,
+          "resizeCallbacks": 1,
+          "mutations": 3
+        },
+        "churn": {
+          "before": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 3,
+            "layoutCallbacks": 1,
+            "resizeCallbacks": 1,
+            "mutations": 3
+          },
+          "after": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 18,
+            "layoutCallbacks": 31,
+            "resizeCallbacks": 1,
+            "mutations": 33
+          }
+        },
+        "settled": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 18,
+          "layoutCallbacks": 31,
+          "resizeCallbacks": 1,
+          "mutations": 33
+        },
+        "chatOpenElapsedMs": 312,
+        "checks": [],
+        "errors": []
+      },
+      {
+        "version": "candidate",
+        "completeEntryPoint": true,
+        "cpuThrottle": 6,
+        "viewport": 360,
+        "initial": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 0
+        },
+        "opened": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 2
+        },
+        "churn": {
+          "before": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 0,
+            "layoutCallbacks": 0,
+            "resizeCallbacks": 0,
+            "mutations": 2
+          },
+          "after": {
+            "chatSaves": 0,
+            "settingsSaves": 1,
+            "rectReads": 0,
+            "layoutCallbacks": 0,
+            "resizeCallbacks": 0,
+            "mutations": 2
+          }
+        },
+        "settled": {
+          "chatSaves": 0,
+          "settingsSaves": 1,
+          "rectReads": 0,
+          "layoutCallbacks": 0,
+          "resizeCallbacks": 0,
+          "mutations": 2
+        },
+        "chatOpenElapsedMs": 459.69999998807907,
+        "checks": [
+          "closed mobile window performs zero host layout reads or layout callbacks",
+          "open mobile window also avoids host column measurements and observers",
+          "open desktop window is fixed at 1040px and centered independently of chat column",
+          "desktop window never registers layout observers or reads chat bounds",
+          "reopen and desktop-to-mobile breakpoint work entirely through CSS"
+        ],
+        "errors": []
+      }
+    ],
+    "requests": [
+      {
+        "version": "original",
+        "path": "/api/extensions/version",
+        "method": "POST"
+      },
+      {
+        "version": "original",
+        "path": "/api/plugins/st-bainiaodata/fixture-binding",
+        "method": "GET"
+      },
+      {
+        "version": "editfix3",
+        "path": "/api/extensions/version",
+        "method": "POST"
+      },
+      {
+        "version": "editfix3",
+        "path": "/api/plugins/st-bainiaodata/fixture-binding",
+        "method": "GET"
+      },
+      {
+        "version": "candidate",
+        "path": "/api/extensions/version",
+        "method": "POST"
+      },
+      {
+        "version": "candidate",
+        "path": "/api/plugins/st-bainiaodata/fixture-binding",
+        "method": "GET"
+      }
+    ],
+    "scope": "Complete Veridis entry point; pinned Luker CSS/jQuery; stub host lifecycle/backend, not an Android APK or actual memory service"
+  },
+  "conclusion": "Original shell initialization restored exactly; fixed centering uses CSS alone. Actual Android memory timeout root cause remains unconfirmed.",
+  "rejectedHypothesis": "Bulk historical metadata maintenance is identical upstream and cannot by itself establish a local-only regression.",
+  "candidateRuntimeDeltaFromEditfix4": [
+    "src/ui/shell.js",
+    "styles/column.css"
+  ],
+  "unchangedScope": "Cleaning presets/rules/switches, text, metadata retention, persistence, Luker, MyriadKnots and backend.",
+  "candidateRuntimeDeltaFromEditfix5": [
+    "src/ui/shell.js",
+    "styles/column.css"
+  ],
+  "candidateShellByteIdenticalToUpstream": true,
+  "editfix7RuntimeDeltaFromEditfix6": [
+    "src/aiRewrite/boundaryDialogue.js"
+  ],
+  "editfix7StartupUiSettingsAndCleanupUnchanged": true,
+  "editfix8RuntimeDeltaFromEditfix7": [
+    "index.js",
+    "src/aiRewrite/adjacentContinuation.js",
+    "src/aiRewrite/narrationCopies.js",
+    "src/update/status.js"
+  ],
+  "historicalUserEvidence": "Friend reports original works in Luker; local editfix.3 produces binding GET timeout. User vanilla ST mobile is unaffected.",
+  "editfix9RuntimeDeltaFromEditfix8": [
+    "index.js",
+    "src/aiRewrite/requestOptions.js",
+    "src/host/appContext.js",
+    "src/ui/personaProtection.js",
+    "styles/diff.css",
+    "templates/purifier.html"
+  ],
+  "editfix10RuntimeDeltaFromEditfix9": [
+    "src/ui/shell.js"
+  ],
+  "editfix10MenuPattern": "Same row classes and div.extensionsMenuExtensionButton as native attachments/manage-button.html; no CSS changes.",
+  "editfix11RuntimeDeltaFromEditfix10": [
+    "styles/ai.css"
+  ],
+  "userReportedEditfix10NoLongerFreezes": true,
+  "editfix11ApiPresetBehavior": "Original select and dirty suffix logic unchanged; existing field spans its grid row.",
+  "editfix12RuntimeDeltaFromEditfix11": [
+    "src/settings/defaults.js",
+    "src/ui/fontScale.js",
+    "styles/column.css",
+    "styles/diff.css",
+    "templates/purifier.html"
+  ],
+  "editfix12FontSettings": {
+    "uiFontScale": "existing, 100%-160%",
+    "diffFontScale": "new independent preference, default100%, range100%-160%"
+  },
+  "editfix13RuntimeDeltaFromEditfix12": [
+    "index.js",
+    "src/aiRewrite/generation.js",
+    "src/aiRewrite/isolatedRequest.js",
+    "src/aiRewrite/requestOptions.js",
+    "src/aiRewrite/settingsEvents.js",
+    "src/aiRewrite/task.js",
+    "src/deepClean/aiProcessing.js",
+    "src/deepClean/lifecycle.js",
+    "src/host/appContext.js",
+    "src/settings/defaults.js",
+    "src/settings/migration.js",
+    "styles/ai.css",
+    "templates/purifier.html"
+  ],
+  "editfix13Streaming": {
+    "default": false,
+    "apiPresetOwned": true,
+    "helper": "native should_stream",
+    "proxy": "native host EventSourceStream; lazy import; aggregate complete result"
+  },
+  "editfix14RuntimeDeltaFromEditfix13": [
+    "templates/purifier.html"
+  ],
+  "editfix14StreamSwitchPlacement": "existing API connection header switch group; removed from details; no runtime JS/CSS changes",
+  "editfix15RuntimeDeltaFromEditfix14": [
+    "templates/purifier.html"
+  ],
+  "editfix15StreamSwitchPlacement": "existing connection form grid immediately after model; desktop next to model, mobile below model; no runtime JS/CSS changes",
+  "editfix15CumulativeModulesByteIdentical": {
+    "src/ui/personaProtection.js": true,
+    "src/update/status.js": true,
+    "src/ui/shell.js": true,
+    "src/aiRewrite/boundaryDialogue.js": true,
+    "src/aiRewrite/narrationCopies.js": true,
+    "src/aiRewrite/adjacentContinuation.js": true,
+    "src/ui/fontScale.js": true,
+    "styles/diff.css": true
+  }
+}

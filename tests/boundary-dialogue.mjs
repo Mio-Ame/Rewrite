@@ -1,0 +1,233 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { trimCopiedBoundaryDialogue } from '../src/aiRewrite/boundaryDialogue.js';
+const replace = (source, target, rewritten) => ({start: source.indexOf(target), end: source.indexOf(target) + target.length, rewritten});
+const guard = (source, replacements) => {
+    const before = structuredClone(replacements), result = trimCopiedBoundaryDialogue(source, replacements);
+    assert.deepEqual(replacements, before);
+    return { ...result, text: result.replacements.slice().sort((a,b)=>b.start-a.start).reduce((text,r)=>text.slice(0,r.start)+r.rewritten+text.slice(r.end),source) };
+};
+
+test('synthetic internal copied name rejects only the unsafe replacement without losing its relocated fact',()=>{
+    const target='面板上，有一行用激光刻下的、如今已与涂层融为一体的银色花体铭文，';
+    const source=target+'“Archive”。';
+    const value='面板上有一行用激光刻下的银色花体铭文，“Archive”，已与涂层融为一体。';
+    const result=guard(source,[replace(source,target,value)]);
+    assert.equal(result.text,source);
+    assert.equal(result.replacements[0].strategy,'boundary-dialogue-rejected');
+    assert.equal(result.removedCount,0);
+});
+
+test('internal copied quote fallback is local and does not reject unrelated or original quoted facts',()=>{
+    const target='那里有一道复杂的铭文，',next='他极其认真地记录。',source=target+'“Archive”。'+next;
+    const value='那里有一道铭文，“Archive”，已经刻好了。';
+    const result=guard(source,[replace(source,target,value),replace(source,next,'他认真地记录。')]);
+    assert.equal(result.text,target+'“Archive”。他认真地记录。');
+    const different='那里有一道铭文，“Other”，已经刻好了。';
+    assert.equal(guard(source,[replace(source,target,different)]).replacements[0].rewritten,different);
+    assert.equal(guard(source,[replace(source,target,value),replace(source,'“Archive”','“Other”')]).replacements[0].rewritten,value);
+    const quoted='原名是“Archive”，已经刻好了。';
+    assert.equal(guard(quoted,[replace(quoted,quoted,quoted)]).text,quoted);
+});
+
+test('synthetic subject copied across a sound quote is trimmed, while word reordering is retained',()=>{
+    const prefix='架子上的铁盒“哐当”',target='一声掉在了地上，发出清脆的声响。';
+    const source=prefix+target+'\n\n管理员没有回头，也不需要回头。';
+    const result=guard(source,[replace(source,target,'铁盒掉在了地上，发出清脆的响声。')]);
+    assert.equal(result.text,prefix+'掉在了地上，发出清脆的响声。\n\n管理员没有回头，也不需要回头。');
+    assert.equal(result.removedCount,1);
+    assert.equal(trimCopiedBoundaryDialogue(source,result.replacements).removedCount,0);
+});
+
+test('sound subject guard preserves different actions, subjects, negation and edited source anchors',()=>{
+    const prefix='架子上的铁盒“哐当”',target='一声掉在了地上，发出清脆的声响。',source=prefix+target;
+    for(const value of ['杯子掉在了地上，发出清脆的响声。','铁盒没有掉在了地上。','铁盒掉进了水里，发出清脆的响声。'])
+        assert.equal(guard(source,[replace(source,target,value)]).replacements[0].rewritten,value);
+    const value='铁盒掉在了地上，发出清脆的响声。';
+    assert.equal(guard(source,[replace(source,'架子上的铁盒','你的杯子'),replace(source,target,value)]).replacements[1].rewritten,value);
+    const own='一声之后，铁盒掉在了地上。',full=prefix+own;
+    assert.equal(guard(full,[replace(full,own,'铁盒掉在了地上。')]).replacements[0].rewritten,'铁盒掉在了地上。');
+});
+
+test('synthetic copies a sound quote with an unlinked noun suffix',()=>{
+    const target='那只放在桌面的、带有金属搭扣的箱子，发出了轻微的';
+    const tail='“咔哒”声。',source=target+tail;
+    const result=guard(source,[replace(source,target,source)]);
+    assert.equal(result.text,source);
+    assert.equal(result.replacements[0].rewritten,target);
+    assert.equal(result.removedCount,1);
+    assert.equal(trimCopiedBoundaryDialogue(source,result.replacements).removedCount,0);
+});
+
+test('unlinked quoted suffix trimming requires exact preserved continuation and nonempty narration',()=>{
+    const target='盒子发出了轻微的',tail='“咔哒”声。',source=target+tail;
+    for(const response of ['盒子发出了轻微的“咔哒”响声。','盒子发出了轻微的“砰”声。'])
+        assert.equal(guard(source,[replace(source,target,response)]).replacements[0].rewritten,response);
+    const output=source;
+    assert.equal(guard(source,[replace(source,target,output),replace(source,'声。','响声。')]).replacements[0].rewritten,output);
+    assert.equal(guard(source+tail,[replace(source+tail,target,output)]).text,source+tail);
+});
+
+test('copied following quoted term plus its external full stop is removed together',()=>{
+    const target='他想阅读这未知的、由编辑主导的新';
+    const source=target+'“章节”。后文保留。';
+    const result=guard(source,[replace(source,target,'他想阅读这未知的“章节”。')]);
+    assert.equal(result.text,'他想阅读这未知的“章节”。后文保留。');
+    assert.equal(result.removedCount,1);
+});
+
+test('a copied quoted term with a noun and full stop is removed as one external suffix',()=>{
+    const target='纸面留下了清晰的、名为',tail='“确认”的印记。',source=target+tail;
+    const result=guard(source,[replace(source,target,'纸面留下了'+tail)]);
+    assert.equal(result.text,'纸面留下了'+tail);
+    assert.equal(result.removedCount,1);
+    assert.equal(trimCopiedBoundaryDialogue(source,result.replacements).removedCount,0);
+});
+
+test('quoted noun suffix changes and existing repeated source suffixes are preserved',()=>{
+    const target='纸面留下了清晰的、名为',tail='“确认”的印记。',source=target+tail;
+    for(const response of ['纸面留下了“确认”的字迹。','纸面留下了“撤销”的印记。',tail]) {
+        assert.equal(guard(source,[replace(source,target,response)]).replacements[0].rewritten,response);
+    }
+    const response='纸面留下了'+tail;
+    assert.equal(guard(source,[replace(source,target,response),replace(source,'的印记。','的字迹。')]).replacements[0].rewritten,response);
+    assert.equal(guard(source+tail,[replace(source+tail,target,response)]).text,'纸面留下了'+tail+tail);
+});
+
+test('punctuated term repair does not cut uncertain punctuation or changed retained ranges',()=>{
+    const target='这是所谓的新',source=target+'“章节”。';
+    for(const response of ['这是“章节”！','这是“作业”。','“章节”。']) {
+        assert.equal(guard(source,[replace(source,target,response)]).replacements[0].rewritten,response);
+    }
+    const response='这是“章节”。';
+    assert.equal(guard(source,[replace(source,target,response),replace(source,'。','！')]).replacements[0].rewritten,response);
+    const repeated=source+'“章节”。';
+    assert.equal(guard(repeated,[replace(repeated,target,response)]).text,'这是“章节”。“章节”。');
+});
+
+test('a naming fragment completed with the retained noun and speech is spliced before the original term',()=>{
+    const target='管理员的语气里甚至带上了一丝可以称之为';
+    const quote='“好的。既然是读者的请求，我们当然会认真地、及时地回复。”';
+    const tail='“亲切”的笑意，'+quote,source=target+tail;
+    const result=guard(source,[replace(source,target,'管理员的语气里带上了一丝笑意，'+quote)]);
+    assert.equal(result.text,'管理员的语气里带上了一丝'+tail);
+    assert.equal(result.removedCount,1);
+    assert.equal(trimCopiedBoundaryDialogue(source,result.replacements).removedCount,0);
+});
+
+test('quoted term repair preserves original repeat speech and works with other quoted nouns',()=>{
+    const target='他的表情带着可以称为',quote='「请进。请进。」';
+    const tail='「礼貌」的微笑，'+quote;
+    assert.equal(guard(target+tail,[replace(target+tail,target,'他的表情带着微笑，'+quote)]).text,'他的表情带着'+tail);
+});
+
+test('uncertain completions, changed neighbors and a copied quote without noun do not authorize cutting',()=>{
+    const target='管理员的语气里甚至带上了一丝可以称之为',quote='“请进。”',tail='“亲切”的笑意，'+quote,source=target+tail;
+    for(const output of ['管理员的语气里带上了一丝笑意，“请停下。”','管理员的语气里带上了一丝怒意，'+quote,'笑意，'+quote,'他回答，带上笑意，'+quote]){
+        assert.equal(guard(source,[replace(source,target,output)]).replacements[0].rewritten,output);
+    }
+    const r=replace(source,target,'管理员的语气里带上了一丝笑意，'+quote);
+    assert.equal(guard(source,[r,replace(source,'的笑意，','的怒意，')]).replacements[0].rewritten,r.rewritten);
+    const separated=target+'“亲切”的笑意。'+quote;
+    assert.equal(guard(separated,[replace(separated,target,r.rewritten)]).replacements[0].rewritten,r.rewritten);
+});
+test('short dialogue copied before narration is removed without undoing simile cleanup', () => {
+    const source='“别怕。”档案管理员的声音像是恶魔的低语，温柔地安抚着，“只是确认一下。”';
+    const target='档案管理员的声音像是恶魔的低语，温柔地安抚着，';
+    const result=guard(source,[replace(source,target,'“别怕。”档案管理员说道，')]);
+    assert.equal(result.text,'“别怕。”档案管理员说道，“只是确认一下。”');assert.equal(result.removedCount,1);
+});
+test('copied next dialogue is removed while retaining the already cleaned narration', () => {
+    const target='他的声音仿佛在远处传来，',source=target+'“先放松……再慢慢说。”';
+    const result=guard(source,[replace(source,target,'他说道，“先放松再慢慢说。”')]);
+    assert.equal(result.text,'他说道，“先放松……再慢慢说。”');assert.equal(result.removedCount,1);
+});
+for(const [open,close] of [['“','”'],['「','」'],['『','』'],['"','"'],["'","'"],['«','»']]) {
+    test('short copy with '+open+close+' quote pair and boundary whitespace',()=>{
+        const quote=open+'别怕。'+close,target='他轻声说道，',source=quote+'\n'+target;
+        const result=guard(source,[replace(source,target,'  '+quote+'\n'+target)]);
+        assert.equal(result.text,quote+'\n\n'+target);assert.equal(result.removedCount,1);
+    });
+}
+test('both boundary copies and repeated added copies are trimmed locally',()=>{
+    const target='他像秘书般回答，',source='“别怕。”'+target+'“继续。”';
+    const result=guard(source,[replace(source,target,'“别怕。”“别怕。”他说道，“继续。”')]);
+    assert.equal(result.text,'“别怕。”他说道，“继续。”');assert.equal(result.removedCount,3);
+});
+test('preexisting repeated speech, actions and normal counts are preserved',()=>{
+    const target='他像秘书般回答，',source='“别怕。”“别怕。”'+target+'“拿两个杯子，再拿两条毛巾。”';
+    const result=guard(source,[replace(source,target,'他拿起杯子，回答，')]);
+    assert.equal(result.text,'“别怕。”“别怕。”他拿起杯子，回答，“拿两个杯子，再拿两条毛巾。”');assert.equal(result.removedCount,0);
+});
+test('quoted source targets are never deduplicated by this narration boundary guard',()=>{
+    const source='“别怕。”“别怕。”',target=source.slice(5),result=guard(source,[replace(source,target,target)]);
+    assert.equal(result.text,source);assert.equal(result.removedCount,0);
+});
+for(const source of ['```\n“别怕。”他像秘书般回答，\n```','<!--“别怕。”他像秘书般回答，-->','“他说‘别怕。’他像秘书般回答，”']) {
+    test('enclosing code, comments or dialogue are protected: '+source.slice(0,15),()=>{
+        const target='他像秘书般回答，',r=replace(source,target,'“别怕。”他说道，');
+        assert.equal(guard(source,[r]).removedCount,0);
+    });
+}
+test('different or nonadjacent dialogue is not treated as a proven copy',()=>{
+    for(const [source,output] of [['“别怕。”他停下。他像秘书般回答，','“别怕。”他说道，'],['“别怕。”他像秘书般回答，','“别动。”他说道，']]){
+        assert.equal(guard(source,[replace(source,'他像秘书般回答，',output)]).removedCount,0);
+    }
+});
+test('a changed neighboring target cannot authorize deletion of dialogue',()=>{
+    const target='他像秘书般回答，',source='“别怕。”'+target;
+    const result=guard(source,[replace(source,'“别怕。”','“别动。”'),replace(source,target,'“别怕。”他说道，')]);
+    assert.equal(result.removedCount,0);
+});
+test('a response consisting only of copied dialogue is not silently changed into deletion',()=>{
+    const target='他像秘书般回答，',source='“别怕。”'+target;
+    const result=guard(source,[replace(source,target,'“别怕。”')]);assert.equal(result.removedCount,0);
+});
+test('a quote inside generated code or an enclosing quote is not cut as boundary speech',()=>{
+    const target='他像秘书般回答，';
+    for(const [quote,output] of [['“别怕。”','```text\n他说道，“别怕。”'],['‘别怕。’','“转述他说道，‘别怕。’']]){
+        const source=target+quote;
+        assert.equal(guard(source,[replace(source,target,output)]).removedCount,0);
+    }
+});
+
+test('the reported preceding dialogue copied after narration is removed together with its added colon',()=>{
+    const quote='“管理员甲，放下它！”',target='档案管理员的声音里第一次出现了罕见的、近乎严厉的急切。';
+    const source=quote+target,cleaned='档案管理员的声音里第一次出现了罕见的急切。';
+    for(const connector of ['：',':',' ： ', '：:']){
+        const result=guard(source,[replace(source,target,cleaned+connector+quote)]);
+        assert.equal(result.text,quote+cleaned);assert.equal(result.removedCount,1);
+    }
+});
+
+test('a following quote copied before narration is removed without touching the original quote',()=>{
+    const target='他像秘书般回答，',quote='“先放松。”',source=target+quote;
+    const result=guard(source,[replace(source,target,quote+'他回答，')]);
+    assert.equal(result.text,'他回答，'+quote);assert.equal(result.removedCount,1);
+});
+
+test('all generated boundary copies can refer to either untouched source neighbor',()=>{
+    const target='他像秘书般回答，',source='“别怕。”'+target+'“继续。”';
+    const result=guard(source,[replace(source,target,'“继续。”他回答，：“别怕。”')]);
+    assert.equal(result.text,'“别怕。”他回答，“继续。”');assert.equal(result.removedCount,2);
+});
+
+test('an added speech colon is removed and original terminal punctuation is restored when necessary',()=>{
+    for(const ending of ['。','，','！','；']){
+        const target='他像秘书般回答'+ending,source='“别怕。”'+target;
+        assert.equal(guard(source,[replace(source,target,'他回答：“别怕。”')]).text,'“别怕。”他回答'+ending);
+    }
+});
+
+test('a source speech colon before retained following dialogue is preserved',()=>{
+    const target='他像秘书般回答：',source='“别怕。”'+target+'“继续。”';
+    assert.equal(guard(source,[replace(source,target,'他回答：“别怕。”')]).text,'“别怕。”他回答：“继续。”');
+});
+
+test('cross-boundary removal remains conservative for changed neighbors, quoted source and copy-only responses',()=>{
+    const target='他像秘书般回答。',quote='“别怕。”',source=quote+target;
+    assert.equal(guard(source,[replace(source,quote,'“别动。”'),replace(source,target,'他回答：'+quote)]).removedCount,0);
+    assert.equal(guard(source,[replace(source,target,'：'+quote)]).removedCount,0);
+    const first=guard(source,[replace(source,target,'他回答。'+quote)]);
+    assert.deepEqual(trimCopiedBoundaryDialogue(source,first.replacements),{replacements:first.replacements,removedCount:0});
+});

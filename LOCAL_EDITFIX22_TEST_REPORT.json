@@ -1,0 +1,307 @@
+{
+  "version": "local editfix22",
+  "testsPassed": 254,
+  "testsFailed": 0,
+  "uiChecks": 69,
+  "tauriVersion": "v2.4.0",
+  "tauriReference": "fff9af0333be97697be2313981699ab0ce35c236",
+  "actualTauriAppTested": false,
+  "actualAndroidTested": false,
+  "realModelCalls": 0,
+  "remotePublished": false,
+  "runtimeChanges": [
+    "src/aiRewrite/apply.js",
+    "src/aiRewrite/communicationMonitor.js",
+    "src/aiRewrite/debug.js",
+    "src/aiRewrite/generation.js",
+    "src/aiRewrite/isolatedRequest.js",
+    "src/aiRewrite/runtime.js",
+    "src/aiRewrite/logTime.js",
+    "src/aiRewrite/boundaryRepair.js"
+  ],
+  "lukerEvidence": {
+    "results": {
+      "host": "Luker 2452d5646f5a3b6ad7e6c3d8809826c10c0a9e3a; affected archive plugins",
+      "actualAndroidHardware": false,
+      "actualUserThemeTested": false,
+      "realProviderCalls": 0,
+      "layouts": [
+        {
+          "width": 1280,
+          "scale": 1,
+          "apiInput": 13,
+          "fields": [
+            {
+              "id": "blai-ai-additional-parameters",
+              "text": 13,
+              "placeholder": 13,
+              "width": 548,
+              "scrollWidth": 548
+            },
+            {
+              "id": "blai-ai-excluded-parameters",
+              "text": 13,
+              "placeholder": 13,
+              "width": 548,
+              "scrollWidth": 548
+            }
+          ],
+          "panelOverflow": 0
+        },
+        {
+          "width": 1280,
+          "scale": 1.6,
+          "apiInput": 20.8,
+          "fields": [
+            {
+              "id": "blai-ai-additional-parameters",
+              "text": 20.8,
+              "placeholder": 20.8,
+              "width": 548,
+              "scrollWidth": 548
+            },
+            {
+              "id": "blai-ai-excluded-parameters",
+              "text": 20.8,
+              "placeholder": 20.8,
+              "width": 548,
+              "scrollWidth": 548
+            }
+          ],
+          "panelOverflow": 0
+        },
+        {
+          "width": 390,
+          "scale": 1,
+          "apiInput": 13,
+          "fields": [
+            {
+              "id": "blai-ai-additional-parameters",
+              "text": 13,
+              "placeholder": 13,
+              "width": 322,
+              "scrollWidth": 322
+            },
+            {
+              "id": "blai-ai-excluded-parameters",
+              "text": 13,
+              "placeholder": 13,
+              "width": 322,
+              "scrollWidth": 322
+            }
+          ],
+          "panelOverflow": 0
+        },
+        {
+          "width": 390,
+          "scale": 1.6,
+          "apiInput": 20.8,
+          "fields": [
+            {
+              "id": "blai-ai-additional-parameters",
+              "text": 20.8,
+              "placeholder": 20.8,
+              "width": 322,
+              "scrollWidth": 322
+            },
+            {
+              "id": "blai-ai-excluded-parameters",
+              "text": 20.8,
+              "placeholder": 20.8,
+              "width": 322,
+              "scrollWidth": 322
+            }
+          ],
+          "panelOverflow": 0
+        }
+      ],
+      "requests": [
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-model",
+          "stream": false
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-model",
+          "stream": true
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-json",
+          "stream": true
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-break",
+          "stream": true
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-error",
+          "stream": true
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-hang",
+          "stream": true
+        }
+      ],
+      "oldSettingsDefaultOff": true,
+      "transport": {
+        "nonstream": "{\"hit-1\":\"他把文件放在桌上。\"}",
+        "stream": "{\"hit-1\":\"他把文件放在桌上。\"}",
+        "jsonFallback": "{\"hit-1\":\"他把文件放在桌上。\"}",
+        "errors": {
+          "fixture-break": {
+            "name": "Error",
+            "message": "AI 改写流式响应中断，未应用改写"
+          },
+          "fixture-error": {
+            "name": "Error",
+            "message": "AI 改写流式接口返回错误，请检查改写接口配置"
+          },
+          "fixture-hang": {
+            "name": "AbortError",
+            "message": "signal is aborted without reason"
+          }
+        },
+        "chatUnchanged": true,
+        "equal": true
+      },
+      "persistedAcrossReload": true,
+      "fontSettingsPreserved": true,
+      "errors": [],
+      "passed": true
+    },
+    "writeback": {
+      "realProviderCalls": 0,
+      "cases": [
+        {
+          "streaming": false,
+          "model": "fixture-model",
+          "text": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 1 -->",
+          "expected": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 1 -->",
+          "matches": true,
+          "swipeMatches": true,
+          "originalRetained": true,
+          "otherFloorsUnchanged": true,
+          "safeFallback": true
+        },
+        {
+          "streaming": true,
+          "model": "fixture-model",
+          "text": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 2 -->",
+          "expected": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 2 -->",
+          "matches": true,
+          "swipeMatches": true,
+          "originalRetained": true,
+          "otherFloorsUnchanged": true,
+          "safeFallback": true
+        },
+        {
+          "streaming": true,
+          "model": "fixture-break",
+          "text": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 3 -->",
+          "expected": "<content>“请把文件放下。”他把文件放在桌上。随后关上门。</content><!-- neutral fixture 3 -->",
+          "matches": true,
+          "swipeMatches": true,
+          "originalRetained": true,
+          "otherFloorsUnchanged": true,
+          "safeFallback": true
+        }
+      ],
+      "requests": [
+        {
+          "stream": false,
+          "model": "fixture-model"
+        },
+        {
+          "stream": true,
+          "model": "fixture-model"
+        },
+        {
+          "stream": true,
+          "model": "fixture-break"
+        }
+      ],
+      "passed": true
+    },
+    "api-presets": {
+      "cases": [
+        {
+          "width": 1280,
+          "offAndOnSaved": true,
+          "switchRestoresConnection": true,
+          "dirtySuffix": true,
+          "cancelSwitchKeepsDraft": true,
+          "discardDraftWorks": true,
+          "saveAndReloadPersistsBoth": true
+        },
+        {
+          "width": 390,
+          "offAndOnSaved": true,
+          "switchRestoresConnection": true,
+          "dirtySuffix": true,
+          "cancelSwitchKeepsDraft": true,
+          "discardDraftWorks": true,
+          "saveAndReloadPersistsBoth": true
+        }
+      ],
+      "realProviderCalls": 0,
+      "passed": true
+    },
+    "luker-compat": {
+      "actualAndroidHardware": false,
+      "realProviderCalls": 0,
+      "versionRequests": [
+        {
+          "extensionName": "SillyTavern-Self-Check",
+          "global": true
+        }
+      ],
+      "memoryReads": [
+        {
+          "path": "/api/plugins/st-bainiaodata/v1/health",
+          "elapsedMs": 20.274
+        },
+        {
+          "path": "/api/plugins/st-bainiaodata/v1/records/qianqianjie/chat-identity-bindings/binding-4d96bec6-190d-41f8-ae2d-79ab9713493a",
+          "elapsedMs": 97.56
+        },
+        {
+          "path": "/api/plugins/st-bainiaodata/v1/records/qianqianjie/chat-4d96bec6-190d-41f8-ae2d-79ab9713493a/v3-root",
+          "elapsedMs": 11.633
+        },
+        {
+          "path": "/api/plugins/st-bainiaodata/v1/records/qianqianjie/chat-4d96bec6-190d-41f8-ae2d-79ab9713493a/v3-people-workspace",
+          "elapsedMs": 12.048
+        }
+      ],
+      "pageErrors": [],
+      "card": {
+        "openMs": 4487.600000023842,
+        "chatLength": 700
+      },
+      "state": {
+        "bridge": {
+          "status": "ready",
+          "identity": {
+            "hostChatId": "compat-fixture",
+            "qqjChatId": "4d96bec6-190d-41f8-ae2d-79ab9713493a",
+            "characterLocator": "CompatFixture.png",
+            "personaLocator": "user-default.png"
+          }
+        },
+        "metrics": {
+          "hostReadsByVeridis": 0,
+          "ticks": 116,
+          "largestTickGap": 853.3999999761581
+        },
+        "messages": 10
+      },
+      "passed": true
+    }
+  },
+  "limits": "Native SillyTavern contracts; Tauri route/lifecycle with mock bridge; real isolated Luker server with synthetic chat and mock provider."
+}

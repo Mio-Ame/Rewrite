@@ -1,0 +1,263 @@
+// Owns Veridis update-status derivation and its Tools/Feedback projections.
+import { getAppContext } from '../host/appContext.js';
+import { logger } from '../log.js';
+
+const remoteManifestRepository = 'The-Veridis-Lion/Veridis-Rewrite';
+
+let updateState = null;
+let updateInFlight = false;
+let checkInFlight = false;
+
+function makeElement(tagName, className, text = '') {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (text) element.textContent = text;
+    return element;
+}
+
+function releaseNoteItems(note) {
+    return String(note || '').split(/[；;]/).map((item) => item.trim()).filter(Boolean);
+}
+
+function appendStatusRow(container, version, status, statusClass = '') {
+    const row = makeElement('div', 'blai-tools-version-status-row');
+    const current = makeElement('div', 'blai-tools-version-current');
+    current.append(makeElement('span', 'blai-tools-version-label', '当前版本'));
+    current.append(makeElement('strong', 'blai-tools-version-value', `v${version}`));
+    row.append(current);
+    row.append(makeElement('p', `blai-tools-version-status ${statusClass}`.trim(), status));
+    container.append(row);
+}
+
+function appendReleaseItems(container, items) {
+    const normalizedItems = items.map((item) => String(item || '').trim()).filter(Boolean);
+    if (!normalizedItems.length) return;
+    const list = makeElement('ul', 'blai-tools-version-note-list');
+    normalizedItems.forEach((item) => list.append(makeElement('li', '', item)));
+    container.append(list);
+}
+
+function appendReleaseNotes(container, note) {
+    appendReleaseItems(container, releaseNoteItems(note));
+}
+
+function appendUpdateAction(container) {
+    const action = makeElement('button', 'blai-tools-version-update-action', '更新并刷新');
+    action.type = 'button';
+    action.dataset.updateAction = 'update';
+    container.append(action);
+    const error = makeElement('p', 'blai-tools-version-error');
+    error.id = 'blai-tools-version-error';
+    error.hidden = true;
+    container.append(error);
+}
+
+function projectToolsVersion(message = '正在检查版本信息…') {
+    const content = document.getElementById('blai-tools-version-content');
+    if (!content) return;
+    content.replaceChildren();
+
+    if (!updateState) {
+        content.append(makeElement('p', 'blai-tools-version-status', message));
+        return;
+    }
+
+    const details = makeElement('div', 'blai-tools-version-details');
+    const body = makeElement('div', 'blai-tools-version-body');
+    if (updateState.kind === 'latest') {
+        appendStatusRow(details, updateState.localVersion, '已是最新版本', 'is-latest');
+        appendReleaseNotes(body, updateState.updateNote);
+    } else {
+        if (updateState.kind === 'formal') {
+            appendStatusRow(details, updateState.localVersion, `检测到新版本 v${updateState.remoteVersion}`, 'is-update');
+            appendReleaseNotes(body, updateState.updateNote);
+        } else {
+            appendStatusRow(details, updateState.localVersion, '检测到小型修复更新', 'is-update');
+            appendReleaseNotes(body, updateState.updateNote);
+        }
+        appendUpdateAction(body);
+    }
+
+    details.append(body);
+    content.append(details);
+}
+
+export function projectFeedbackUpdateWarning() {
+    const form = document.getElementById('blai-feedback-form');
+    if (!form) return;
+    form.querySelector('.blai-feedback-update-warning')?.remove();
+    if (!updateState || updateState.kind === 'latest') return;
+
+    const warning = makeElement('p', 'blai-feedback-update-warning', '当前版本不是最新版本哦。建议先更新到最新版，如果问题仍然存在，再来反馈哦～');
+    warning.setAttribute('role', 'note');
+    form.prepend(warning);
+}
+
+function projectUpdateSurfaces() {
+    projectToolsVersion();
+    projectFeedbackUpdateWarning();
+}
+
+async function readRemoteJson(url, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    try {
+        const response = await fetch(url, { ...options, cache: 'no-store', signal: controller.signal });
+        if (!response.ok) throw new Error(`Version request returned HTTP ${response.status}.`);
+        return await response.json();
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+async function readRemoteManifest() {
+    return readRemoteJson(`https://raw.githubusercontent.com/${remoteManifestRepository}/main/manifest.json`);
+}
+
+async function readRemoteMainCommitSha() {
+    const reference = await readRemoteJson(`https://api.github.com/repos/${remoteManifestRepository}/git/ref/heads/main`, {
+        headers: { Accept: 'application/vnd.github+json' },
+    });
+    return reference.object?.sha;
+}
+
+export async function initializeUpdateStatus({ versionInfo, isGlobal } = {}) {
+    updateState = null;
+    updateInFlight = false;
+    projectUpdateSurfaces();
+
+    const appContext = getAppContext();
+    let localManifest;
+    try {
+        localManifest = await appContext.readExtensionManifest(appContext.veridisExternalId);
+    } catch (error) {
+        logger.error('[Veridis Update] Failed to read the local manifest; update status will remain hidden.', error);
+        projectToolsVersion('暂时无法确认版本状态。');
+        return;
+    }
+
+    let remoteManifest;
+    try {
+        remoteManifest = await readRemoteManifest();
+    } catch (error) {
+        logger.error('[Veridis Update] Failed to retrieve or parse the remote manifest; update status will remain hidden.', error);
+        projectToolsVersion('暂时无法确认版本状态。');
+        return;
+    }
+
+    const localVersion = String(localManifest?.version || '').trim();
+    const remoteVersion = String(remoteManifest?.version || '').trim();
+    if (!localVersion || !remoteVersion) {
+        logger.error('[Veridis Update] Local or remote manifest does not provide a version; update status will remain hidden.');
+        projectToolsVersion('暂时无法确认版本状态。');
+        return;
+    }
+    if (remoteVersion !== localVersion) {
+        const updateNote = String(remoteManifest?.update_note || '').trim();
+        if (!updateNote) logger.warn('[Veridis Update] Formal remote version update has no update_note metadata.');
+        updateState = { kind: 'formal', localVersion, remoteVersion, updateNote, isGlobal: isGlobal === true };
+    } else {
+        const localFullCommitSha = String(versionInfo?.currentCommitHash || '').trim();
+        let remoteMainFullCommitSha;
+        try {
+            remoteMainFullCommitSha = await readRemoteMainCommitSha();
+        } catch (error) {
+            logger.error('[Veridis Update] Failed to retrieve or parse the remote main reference; update status will remain hidden.', error);
+            projectToolsVersion('暂时无法确认版本状态。');
+            return;
+        }
+        if (!/^[0-9a-f]{40}$/.test(localFullCommitSha) || !/^[0-9a-f]{40}$/.test(remoteMainFullCommitSha)) {
+            logger.error('[Veridis Update] Local or remote main reference does not provide a full commit SHA; update status will remain hidden.');
+            projectToolsVersion('暂时无法确认版本状态。');
+            return;
+        }
+        const isLatest = localFullCommitSha === remoteMainFullCommitSha;
+        updateState = {
+            kind: isLatest ? 'latest' : 'minor',
+            localVersion,
+            remoteVersion,
+            updateNote: String((isLatest ? localManifest : remoteManifest)?.update_note || '').trim(),
+            isGlobal: isGlobal === true,
+        };
+    }
+    projectUpdateSurfaces();
+}
+
+async function updateAndReload() {
+    if (updateInFlight || !updateState || updateState.kind === 'latest') return;
+    const context = getAppContext().getSillyTavernContext?.();
+    const extensionFolderName = getAppContext().veridisExtensionFolderName;
+    const getRequestHeaders = context?.getRequestHeaders;
+    const $button = $('#blai-tools-version-section [data-update-action="update"]');
+    if (typeof getRequestHeaders !== 'function') {
+        const error = new Error('SillyTavern request headers are unavailable.');
+        logger.error('[Veridis Update] Extension update failed.', error);
+        $('#blai-tools-version-error').text(error.message).prop('hidden', false);
+        return;
+    }
+
+    updateInFlight = true;
+    $button.prop('disabled', true).text('正在更新…');
+    try {
+        // Fetch all remote branches first, including main in shallow release-branch installs.
+        const branchesResponse = await fetch('/api/extensions/branches', {
+            method: 'POST',
+            headers: getRequestHeaders(),
+            body: JSON.stringify({ extensionName: extensionFolderName, global: updateState.isGlobal }),
+        });
+        if (!branchesResponse.ok) throw new Error(`Extension branches request returned HTTP ${branchesResponse.status}.`);
+
+        const switchResponse = await fetch('/api/extensions/switch', {
+            method: 'POST',
+            headers: getRequestHeaders(),
+            body: JSON.stringify({ extensionName: extensionFolderName, global: updateState.isGlobal, branch: 'origin/main' }),
+        });
+        if (!switchResponse.ok) throw new Error(`Extension switch request returned HTTP ${switchResponse.status}.`);
+
+        // SillyTavern pulls the current branch; only reach this after checking out main.
+        const response = await fetch('/api/extensions/update', {
+            method: 'POST',
+            headers: getRequestHeaders(),
+            body: JSON.stringify({ extensionName: extensionFolderName, global: updateState.isGlobal }),
+        });
+        if (!response.ok) throw new Error(`Extension update request returned HTTP ${response.status}.`);
+        await response.json();
+        globalThis.location.reload();
+    } catch (error) {
+        logger.error('[Veridis Update] Extension update failed.', error);
+        $('#blai-tools-version-error').text(error instanceof Error ? error.message : String(error)).prop('hidden', false);
+        $button.prop('disabled', false).text('更新并刷新');
+        updateInFlight = false;
+    }
+}
+
+export function bindUpdateStatusEvents(checkForUpdates) {
+    const appendCheckButton = () => {
+        const content = document.getElementById('blai-tools-version-content');
+        if (!content || content.querySelector('[data-update-action="check"]')) return;
+        const button = makeElement('button', 'blai-tools-version-update-action', '检查版本');
+        button.type = 'button';
+        button.dataset.updateAction = 'check';
+        content.append(button);
+    };
+    projectToolsVersion('需要时点击检查版本。');
+    appendCheckButton();
+    $(document).off('click', '#blai-tools-version-section [data-update-action="check"]').on('click', '#blai-tools-version-section [data-update-action="check"]', async function () {
+        if (checkInFlight || updateInFlight || typeof checkForUpdates !== 'function') return;
+        checkInFlight = true;
+        this.disabled = true;
+        this.textContent = '正在检查…';
+        try {
+            await checkForUpdates();
+        } catch (error) {
+            logger.warn('[Veridis Update] Version check failed.', error);
+            projectToolsVersion('暂时无法确认版本状态。');
+        } finally {
+            checkInFlight = false;
+            this.disabled = false;
+            this.textContent = '检查版本';
+            appendCheckButton();
+        }
+    });
+    $(document).off('click', '#blai-tools-version-section [data-update-action="update"]').on('click', '#blai-tools-version-section [data-update-action="update"]', updateAndReload);
+}

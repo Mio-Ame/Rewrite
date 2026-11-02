@@ -1,0 +1,12 @@
+{
+  "version": "local editfix18",
+  "passed": 221,
+  "failed": 0,
+  "realCase": "captured hit-17 request and response",
+  "runtimeChanged": [
+    "src/aiRewrite/adjacentContinuation.js"
+  ],
+  "browserAndLukerRerun": false,
+  "paidModelCalls": 0,
+  "androidHardwareTested": false
+}

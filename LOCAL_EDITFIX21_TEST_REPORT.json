@@ -1,0 +1,8 @@
+{
+  "version": "local editfix21",
+  "passed": 236,
+  "failed": 0,
+  "browserRerun": false,
+  "lukerRerun": false,
+  "behavior": "Unsafe internal following-quote copy retains this original target; other targets apply normally."
+}

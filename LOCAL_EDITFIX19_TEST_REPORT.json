@@ -1,0 +1,9 @@
+{
+  "version": "local editfix19",
+  "passed": 226,
+  "failed": 0,
+  "browserRerun": false,
+  "lukerRerun": false,
+  "realModelCalls": 0,
+  "evidence": "captured hit-7 request and response"
+}

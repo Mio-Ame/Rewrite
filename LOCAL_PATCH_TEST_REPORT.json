@@ -1,0 +1,704 @@
+{
+  "patch": "routerfix.1-editfix.15",
+  "base": "routerfix.1-editfix.14",
+  "runtimeChanged": [
+    "templates/purifier.html"
+  ],
+  "testsChanged": [
+    "tests/ui-column.mjs"
+  ],
+  "allRuntimeJavaScriptAndCSSUnchanged": true,
+  "onlyOriginalControlMovedAndExistingFormClassReused": true,
+  "uiChecksPassed": 69,
+  "uiRegression": {
+    "results": [
+      {
+        "name": "3840 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 1400,
+        "width": 1040,
+        "right": 2440,
+        "chatLeft": 940.796875,
+        "chatWidth": 1958.390625,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "1920 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 440,
+        "width": 1040,
+        "right": 1480,
+        "chatLeft": 470.390625,
+        "chatWidth": 979.1875,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "1366 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 163,
+        "width": 1040,
+        "right": 1203,
+        "chatLeft": 334.65625,
+        "chatWidth": 696.65625,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "1200 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 80,
+        "width": 1040,
+        "right": 1120,
+        "chatLeft": 320,
+        "chatWidth": 560,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "768 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 16,
+        "width": 736,
+        "right": 752,
+        "chatLeft": 188.15625,
+        "chatWidth": 391.671875,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "601 viewport / compact layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 16,
+        "width": 569,
+        "right": 585,
+        "chatLeft": 147.234375,
+        "chatWidth": 306.5,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": false,
+        "scrollable": true
+      },
+      {
+        "name": "600 viewport / mobile layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 0,
+        "width": 600,
+        "right": 600,
+        "chatLeft": 147,
+        "chatWidth": 306,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": true,
+        "scrollable": true
+      },
+      {
+        "name": "390 viewport / mobile layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 0,
+        "width": 390,
+        "right": 390,
+        "chatLeft": 95.546875,
+        "chatWidth": 198.890625,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": true,
+        "scrollable": true
+      },
+      {
+        "name": "360 viewport / mobile layout: column, side access, navigation, scrolling, settings and rules",
+        "passed": true,
+        "left": 0,
+        "width": 360,
+        "right": 360,
+        "chatLeft": 88.1875,
+        "chatWidth": 183.59375,
+        "rootOverflow": 0,
+        "panelOverflow": 0,
+        "navVisible": true,
+        "scrollable": true
+      },
+      {
+        "name": "1920: streaming switch follows model in API fields and works with additional parameters collapsed",
+        "passed": true
+      },
+      {
+        "name": "1920: request parameter text and placeholders match API inputs at 100%",
+        "passed": true
+      },
+      {
+        "name": "1920: request parameter text and placeholders match API inputs at 160%",
+        "passed": true
+      },
+      {
+        "name": "1920: streaming toggles, marks API preset dirty, saves and restores with preset",
+        "passed": true
+      },
+      {
+        "name": "1920: API options validate JSON, save and switch API presets, survive reload and rule-preset switching",
+        "passed": true
+      },
+      {
+        "name": "390: streaming switch follows model in API fields and works with additional parameters collapsed",
+        "passed": true
+      },
+      {
+        "name": "390: request parameter text and placeholders match API inputs at 100%",
+        "passed": true
+      },
+      {
+        "name": "390: request parameter text and placeholders match API inputs at 160%",
+        "passed": true
+      },
+      {
+        "name": "390: streaming toggles, marks API preset dirty, saves and restores with preset",
+        "passed": true
+      },
+      {
+        "name": "390: API options validate JSON, save and switch API presets, survive reload and rule-preset switching",
+        "passed": true
+      },
+      {
+        "name": "1920 light overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 8463,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 light ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2412,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 light clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2199,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 light tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2702,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 light: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "1920 dark overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 8463,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 dark ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2412,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 dark clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2199,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 dark tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 523,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1479,
+        "rootRight": 1480,
+        "clientHeight": 821,
+        "scrollHeight": 2702,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1920 dark: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "1200 light overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 8463,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 light ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2412,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 light clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2199,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 light tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2702,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 light: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "1200 dark overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 8463,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 dark ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2412,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 dark clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2199,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 dark tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 163,
+        "y": 79.46875,
+        "width": 956,
+        "height": 820.53125,
+        "right": 1119,
+        "rootRight": 1120,
+        "clientHeight": 821,
+        "scrollHeight": 2702,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "1200 dark: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "390 light overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 63.625,
+        "width": 390,
+        "height": 725.375,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 725,
+        "scrollHeight": 8512,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 light ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 89.546875,
+        "width": 390,
+        "height": 699.453125,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 699,
+        "scrollHeight": 2906,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 light clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 89.546875,
+        "width": 390,
+        "height": 699.453125,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 699,
+        "scrollHeight": 2737,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 light tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 63.625,
+        "width": 390,
+        "height": 725.375,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 725,
+        "scrollHeight": 3755,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 light: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "390 dark overview: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 63.625,
+        "width": 390,
+        "height": 725.375,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 725,
+        "scrollHeight": 8512,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 dark ai: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 89.546875,
+        "width": 390,
+        "height": 699.453125,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 699,
+        "scrollHeight": 2906,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 dark clean: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 89.546875,
+        "width": 390,
+        "height": 699.453125,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 699,
+        "scrollHeight": 2737,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 dark tools: right-edge scrollbar drags to both ends; wheel and fixed header work",
+        "passed": true,
+        "x": 0,
+        "y": 63.625,
+        "width": 390,
+        "height": 725.375,
+        "right": 390,
+        "rootRight": 390,
+        "clientHeight": 725,
+        "scrollHeight": 3755,
+        "gutter": 14,
+        "overflow": "scroll",
+        "scrollbarWidth": "auto",
+        "scrollbarDisplay": "block",
+        "horizontalOverflow": 0
+      },
+      {
+        "name": "390 dark: switching all four pages retains independent scroll positions",
+        "passed": true
+      },
+      {
+        "name": "scrolling and page changes do not modify AI settings, rules or switches",
+        "passed": true
+      },
+      {
+        "name": "short pages keep a stable scrollbar gutter without creating artificial scroll range",
+        "passed": true
+      },
+      {
+        "name": "1920 overview: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "1920 ai: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "1920 clean: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "1920 tools: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "1920: detached prompt editor follows the selected font scale",
+        "passed": true
+      },
+      {
+        "name": "1920: font preference persists on rebinding and returns to standard size",
+        "passed": true
+      },
+      {
+        "name": "390 overview: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "390 ai: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "390 clean: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "390 tools: 160% font grows proportionally without horizontal clipping",
+        "passed": true
+      },
+      {
+        "name": "390: detached prompt editor follows the selected font scale",
+        "passed": true
+      },
+      {
+        "name": "390: font preference persists on rebinding and returns to standard size",
+        "passed": true
+      },
+      {
+        "name": "font setting leaves host text, AI configuration and rule switches unchanged",
+        "passed": true
+      },
+      {
+        "name": "dark theme retains readable original tokens",
+        "passed": true
+      },
+      {
+        "name": "save, close and reopen preserve fixed centered window",
+        "passed": true
+      },
+      {
+        "name": "host chat column changes do not resize or move plugin window",
+        "passed": true
+      },
+      {
+        "name": "window works without a host chat column or layout binding",
+        "passed": true
+      },
+      {
+        "name": "no browser JavaScript errors",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "realModelCalls": 0,
+    "host": "isolated fixture; native template, CSS and modules; minimal jQuery facade"
+  },
+  "cumulativeModulesByteIdentical": {
+    "src/ui/personaProtection.js": true,
+    "src/update/status.js": true,
+    "src/ui/shell.js": true,
+    "src/aiRewrite/boundaryDialogue.js": true,
+    "src/aiRewrite/narrationCopies.js": true,
+    "src/aiRewrite/adjacentContinuation.js": true,
+    "src/ui/fontScale.js": true,
+    "styles/diff.css": true
+  },
+  "newObserversOrPolling": false,
+  "modelRequestsRerunThisPatch": false,
+  "actualAndroidHardwareTested": false,
+  "actualUserThemeTested": false,
+  "realProviderCalls": 0
+}
